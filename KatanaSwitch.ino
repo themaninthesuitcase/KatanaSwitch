@@ -12,10 +12,11 @@ const int channels = 4;
 int channel = 0;
 int lastChannel = 0;
 
-int buttonPins[channels] = {3, 4, 5, 6};
-int ledPins[channels] = {7, 8, 9, 10};
-const int channelPin = 1;
-const int bankPin = 2;
+// Pin out Configuration
+int buttonPins[channels] = {3, 11, A6, A0};
+int ledPins[channels] = {2, 12, A7, 13};
+const int channelPin = A3;
+const int bankPin = A4;
 
 int channelSettings[channels][2] = {
     // Channel, Bank
@@ -31,12 +32,13 @@ void setup()
   {
     pinMode(buttonPins[i], INPUT_PULLUP); // Set button pin to an input
     pinMode(ledPins[i], OUTPUT);          // Set the led pin to an output
-    digitalWrite(ledPins[i], LOW);        // Make sure the Led is off
+    digitalWrite(ledPins[i], LOW);        // Make sure the LED is off
   }
 
   pinMode(channelPin, OUTPUT);
   pinMode(bankPin, OUTPUT);
 
+  // Default to the first channel
   setChannel(0);
 }
 
@@ -45,15 +47,19 @@ void loop()
   // Test all the buttons for a press
   for (int i = 0; i < channels; i++)
   {
+    // Using INPUT_PULL up so HIGH is off, LOW is on.
     if (digitalRead(buttonPins[i]) == LOW)
-    { // Using INPUT_PULL up so HIGH is off, LOW is on.
-
-      delay(debounceMillis); // super basic debouce as we don't want to add too much delay.
+    {
+      // Super basic debouce as the complexity of managing multiple inputs isn't necessary.
+      // This is blocking but it shouldn't matter much as we're not checking lots of stuff.
+      delay(debounceMillis);
 
       if (digitalRead(buttonPins[i]) == LOW)
       {
         setChannel(i);
-        break; // if one button is high don't bother testing the rest
+        // If one button is high don't bother testing the rest
+        // only one can be on at any one time.
+        break;
       }
     }
   }
@@ -62,11 +68,17 @@ void loop()
 void setChannel(int channel)
 {
   // Toggle the LEDs
-    digitalWrite(lastChannel, LOW);
-    lastChannel = channel;
-    digitalWrite(ledPins[i], HIGH);
+  // Turn the last channel LED off
+  digitalWrite(lastChannel, LOW);
 
-    setRelays(channel);
+  // Update the last channel for the next time we change
+  lastChannel = channel;
+
+  // Update the output as per the channel selected
+  setRelays(channel);
+
+  // Turn on the new channel LED
+  digitalWrite(ledPins[channel], HIGH);
 }
 
 void setRelays(int channel)
