@@ -6,6 +6,10 @@
 //  Copyright © 2018 Chris Pearson. All rights reserved.
 //
 
+// Switching Operations:
+// Tip  : Switches between CH1 and CH2
+// Ring : Switches between BANK A and BANK B
+
 const int debounceMillis = 10;
 
 const int channels = 4;
@@ -20,6 +24,7 @@ const int bankPin = A4;
 
 int channelSettings[channels][2] = {
     // Channel, Bank
+    // (Tip, Ring)
     {LOW, LOW},
     {HIGH, LOW},
     {LOW, HIGH},
