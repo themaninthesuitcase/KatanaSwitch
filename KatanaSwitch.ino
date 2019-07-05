@@ -2,6 +2,9 @@
 //  KatanaSwitch.ino
 //  KatanaSwitch
 //
+// Firmware for arduino based channel switching pedal for the
+// the Boss Katana 50 Amplifer.
+//
 //  Created by Chris Pearson on 03/01/2019.
 //  Copyright © 2018 Chris Pearson. All rights reserved.
 //
@@ -10,17 +13,22 @@
 // Tip  : Switches between CH1 and CH2
 // Ring : Switches between BANK A and BANK B
 
+enum
+{
+  BAUD_RATE = 9600
+};
+
 const int debounceMillis = 10;
 
 const int channels = 4;
-int channel = 0;
 int lastChannel = 0;
 
 // Pin out Configuration
-int buttonPins[channels] = {3, 11, A6, A0};
-int ledPins[channels] = {2, 12, A7, 13};
-const int channelPin = A3;
-const int bankPin = A4;
+// NOTE: Analogue pins A6 and A7 are Analog input only on a Nano, we can't really use them here
+const int buttonPins[channels] = {3, 11, A4, A0};
+const int ledPins[channels] = {2, 12, A5, 13};
+const int channelPin = A1; // TIP
+const int bankPin = A2;    // RING
 
 int channelSettings[channels][2] = {
     // Channel, Bank
@@ -32,24 +40,58 @@ int channelSettings[channels][2] = {
 
 void setup()
 {
-  // initialise all the pins, buttons to INPUT_PULLUP, LEDS to OUTPUT
+  Serial.begin(BAUD_RATE);
+  Serial.print("Booting...\n\n");
+
+  // Initialise all the pins, buttons to INPUT_PULLUP, LEDs to OUTPUT
   for (int i = 0; i < channels; i++)
   {
-    pinMode(buttonPins[i], INPUT_PULLUP); // Set button pin to an input
-    pinMode(ledPins[i], OUTPUT);          // Set the led pin to an output
-    digitalWrite(ledPins[i], LOW);        // Make sure the LED is off
+    int led = ledPins[i];
+    int button = buttonPins[i];
+
+    // Log some stuff that's usefull when debugging
+    Serial.print("CHANNEL: "); Serial.print(i + 1); Serial.print("\n");
+    Serial.print("BUTTON PIN: "); Serial.print(button); Serial.print("\n");
+    Serial.print("LED PIN: "); Serial.print(led); Serial.print("\n");
+
+    pinMode(button, INPUT_PULLUP); // Set button pins to an input
+
+    pinMode(led, OUTPUT);    // Set the led pin to an output
+    digitalWrite(led, HIGH); // Flash them for a pretty start sequence.
+    delay(200);
+    digitalWrite(led, LOW); // Make sure the LED is off we are done.
   }
 
+  // Setup the channel and bank pins
   pinMode(channelPin, OUTPUT);
+  digitalWrite(channelPin, LOW);
   pinMode(bankPin, OUTPUT);
+  digitalWrite(bankPin, LOW);
 
   // Default to the first channel
   setChannel(0);
+
+  Serial.print("Boot completed.\n\n");
 }
 
+// Demo mode!
+// void loop(){
+//   setChannel(0);
+//   delay(1000);
+
+//   setChannel(1);
+//   delay(1000);
+
+//   setChannel(2);
+//   delay(1000);
+
+//   setChannel(3);
+//   delay(1000);
+
+// }
 void loop()
 {
-  // Test all the buttons for a press
+  // Check all the buttons for a press
   for (int i = 0; i < channels; i++)
   {
     // Using INPUT_PULL up so HIGH is off, LOW is on.
@@ -61,7 +103,9 @@ void loop()
 
       if (digitalRead(buttonPins[i]) == LOW)
       {
-        setChannel(i);
+        // Guard against changing to the same channel
+        if (i != lastChannel) setChannel(i);
+
         // If one button is high don't bother testing the rest
         // only one can be on at any one time.
         break;
@@ -70,23 +114,31 @@ void loop()
   }
 }
 
-void setChannel(int channel)
+void setChannel(int newChannel)
 {
-  // Toggle the LEDs
-  // Turn the last channel LED off
-  digitalWrite(lastChannel, LOW);
+  Serial.print("Changing to channel: "); Serial.print(newChannel); Serial.print("\n");
+  Serial.print("Previous channel: "); Serial.print(lastChannel); Serial.print("\n");
 
-  // Update the last channel for the next time we change
-  lastChannel = channel;
+  int lastLed = ledPins[lastChannel];
+  int newLed = ledPins[newChannel];
+
+  // Update the channel LEDs
+  // Turn the last channel LED off
+  digitalWrite(lastLed, LOW);
+
+  // Save the new the last channel for the next time we change
+  lastChannel = newChannel;
 
   // Update the output as per the channel selected
-  setRelays(channel);
+  setOutputs(newChannel);
 
   // Turn on the new channel LED
-  digitalWrite(ledPins[channel], HIGH);
+  digitalWrite(newLed, HIGH);
+
+  Serial.print("Channel changed.\n");
 }
 
-void setRelays(int channel)
+void setOutputs(int channel)
 {
   digitalWrite(channelPin, channelSettings[channel][0]);
   digitalWrite(bankPin, channelSettings[channel][1]);
