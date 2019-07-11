@@ -33,10 +33,10 @@ const int bankPin = A2;    // RING
 int channelSettings[channels][2] = {
     // Channel, Bank
     // (Tip, Ring)
-    {LOW, LOW},
-    {HIGH, LOW},
-    {LOW, HIGH},
-    {HIGH, HIGH}};
+    {HIGH, HIGH}, // A1
+    {LOW, HIGH},  // A2
+    {HIGH, LOW},  // B1
+    {LOW, LOW}};  // B2
 
 void setup()
 {
