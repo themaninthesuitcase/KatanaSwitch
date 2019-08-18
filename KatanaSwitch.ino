@@ -34,8 +34,8 @@ int lastChannel = 0;
 // NOTE: Analogue pins A6 and A7 are Analog input only on a Nano, we can't really use them here
 // 0 based channels are used in the code for simplicity.
 // 0 = A-1, 1 = A-2, 2 = B-1 & 3 = B-2
-const int buttonPins[channels] = {BTN_A1, BTN_A2, BTN_B1, BTN_B2};
-const int ledPins[channels] = {LED_A1, LED_A2, LED_B1, LED_B2};
+const int buttonPins[channels] = {BTN_A2, BTN_B2, BTN_A1, BTN_B1};
+const int ledPins[channels] = {LED_A2, LED_B2, LED_A1, LED_B1};
 const int channelPin = A1; // TIP
 const int bankPin = A2;    // RING
 
