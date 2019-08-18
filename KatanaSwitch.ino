@@ -13,10 +13,17 @@
 // Tip  : Switches between CH1 and CH2
 // Ring : Switches between BANK A and BANK B
 
-enum
-{
-  BAUD_RATE = 9600
-};
+#define BAUD_RATE 9600
+
+#define BTN_A1 3
+#define BTN_A2 11
+#define BTN_B1 A4
+#define BTN_B2 A0
+
+#define LED_A1 2
+#define LED_A2 12
+#define LED_B1 A5
+#define LED_B2 13
 
 const int debounceMillis = 10;
 
@@ -27,8 +34,8 @@ int lastChannel = 0;
 // NOTE: Analogue pins A6 and A7 are Analog input only on a Nano, we can't really use them here
 // 0 based channels are used in the code for simplicity.
 // 0 = A-1, 1 = A-2, 2 = B-1 & 3 = B-2
-const int buttonPins[channels] = {3, 11, A4, A0};
-const int ledPins[channels] = {2, 12, A5, 13};
+const int buttonPins[channels] = {BTN_A1, BTN_A2, BTN_B1, BTN_B2};
+const int ledPins[channels] = {LED_A1, LED_A2, LED_B1, LED_B2};
 const int channelPin = A1; // TIP
 const int bankPin = A2;    // RING
 
