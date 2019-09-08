@@ -2,6 +2,8 @@
 
 **KatanaSwitch** is the Arduino firmware code for a basic 4 button foot switch for the BOSS Katana 50 amplifer.
 
+![Completed Foot Switch using 1032L enclosure](/images/IMG_0120.jpg)
+
 Normally a 2 button latching foot-switch is used, one switching channels and the other switching banks. Say you wanted to change from A-1 to B-2 this would require both buttons to be toggled, one to swap channels and the other to swap banks.  This pedal features 4 momentary switches giving access to all 4 channels via a single button press.
 
 The Katana 50 foot-switch jack is a TRS (Stereo) connection with Tip switching the channel and Ring switching the bank.  To enable foot-switching simply insert a TRS cable into the foot switch jack.
@@ -47,10 +49,22 @@ The firmware assumes the below circuit.  If you create your own then you may nee
 
 **For resistors R1-R4 you may need to change the value dependent on your chosen LEDs.**  Use an [LED Calculator][ledcalc], the supply voltage will be 5V, the forward voltage and current will depend on your LED, check the datasheet.
 
-A PCB design is available for convenience as used in my own pedal.  This is 76x36mm in size, so is a bit awkward to fit an enclosure with the switches and LEDs.  This is something I may address in a future iteration.
+A PCB design is available for convenience as used in my own pedal.  This is 76x36mm in size, so is a bit awkward to fit in some enclosures with the switches and LEDs.  This is something I may address in a future iteration.
 
-The files to make a board can be found in the ```/GerberFiles``` folder.  I used [JLCPCB] in China.
+The files to make a board can be found in the ```/GerberFiles``` folder.  I used [JLCPCB] in China to manufacture the boards.
+
+![JLCPCB made boards](/images/IMG_9425.jpg)
+
+The PCB was laid out with a 1590BB in mind.  My build used a [1032L], though a [Hammond 1590BX][1590bx] is similar in size, though shallower, and will probably work well too if care is taken to fit the PCB.  Using a 4 in line enclosure you will either need to adjust the output pin order, or you will have to use some non-optimal wiring.  See the [Layout-1032L](/themaninthesuitcase/KatanaSwitch/Layout-1032L) branch for the changes I used.
+
+![Internals of my 1032L build](/images/IMG_0117.jpg)
+
+## Known Issues
+
+ * LED for Channel B-2 will remain on dimly at all times.  This is because I used pin 13 which is the pin for the built in LED.  If revised in future I will change this to another pin.
 
 [jlcpcb]: https://jlcpcb.com/
 [ledcalc]: http://led.linear1.org/1led.wiz/
 [cc]: https://creativecommons.org/licenses/by-nc-sa/4.0/
+[1590bx]: http://www.hammondmfg.com/pdf2/1590BX.pdf
+[1032L]: http://www.timetravelaudio.co.uk/shop/components/powder-coated-die-cast-aluminium-enclosures/
