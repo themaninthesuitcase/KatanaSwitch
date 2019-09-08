@@ -55,7 +55,7 @@ The files to make a board can be found in the ```/GerberFiles``` folder.  I used
 
 ![JLCPCB made boards](/images/IMG_9425.jpg)
 
-The PCB was laid out with a 1590BB in mind.  My build used a [1032L], though a [Hammond 1590BX][1590bx] is similar in size, though shallower, and will probably work well too if care is taken to fit the PCB.  Using a 4 in line enclosure you will either need to adjust the output pin order, or you will have to use some non-optimal wiring.  See the [Layout-1032L](/themaninthesuitcase/KatanaSwitch/Layout-1032L) branch for the changes I used.
+The PCB was laid out with a 1590BB in mind.  My build used a [1032L], though a [Hammond 1590BX][1590bx] is similar in size, though shallower, and will probably work well too if care is taken to fit the PCB.  Using a 4 in line enclosure you will either need to adjust the output pin order, or you will have to use some non-optimal wiring.  See the [Layout-1032L][1032L-branch] branch for the changes I used.
 
 ![Internals of my 1032L build](/images/IMG_0117.jpg)
 
@@ -68,3 +68,4 @@ The PCB was laid out with a 1590BB in mind.  My build used a [1032L], though a [
 [cc]: https://creativecommons.org/licenses/by-nc-sa/4.0/
 [1590bx]: http://www.hammondmfg.com/pdf2/1590BX.pdf
 [1032L]: http://www.timetravelaudio.co.uk/shop/components/powder-coated-die-cast-aluminium-enclosures/
+[1032L-branch]: https://github.com/themaninthesuitcase/KatanaSwitch/tree/Layout-1032L
